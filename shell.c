@@ -49,7 +49,7 @@ int main() {
     } else if (process){
       wait(0);
       getrusage(RUSAGE_CHILDREN,&usage);
-      printf("\n\tChild CPU time used: %ld sec", usage.ru_utime.tv_usec);
+      printf("\n\tChild CPU time used: %ld", usage.ru_utime.tv_usec);
       printf("\n\tInvoluntary context switches: %ld", usage.ru_nivcsw);
     } else {
       if(execvp(args[0], args) < 0) {
