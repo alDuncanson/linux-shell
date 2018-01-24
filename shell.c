@@ -12,6 +12,7 @@
 
 int main() {
 
+  system("clear");
   printf("\n\nThis is a shell :)");
 
   while (1) {
@@ -20,7 +21,7 @@ int main() {
     char** args = (char**) malloc(sizeof(char)*50);
     char* token;
     int i = 0;
-    struct rusage cusage, pusage;
+    struct rusage usage;
     pid_t process;
 
     printf("\n\n~: ");
@@ -47,12 +48,9 @@ int main() {
       exit(1);
     } else if (process){
       wait(0);
-      getrusage(RUSAGE_CHILDREN,&cusage);
-      getrusage(RUSAGE_SELF,&pusage);
-      printf("\n\tParent CPU time used: %ld.%06ld sec", pusage.ru_stime.tv_sec, pusage.ru_stime.tv_usec);
-      printf("\n\tChild CPU time used: %ld.%06ld sec", cusage.ru_utime.tv_sec, cusage.ru_utime.tv_usec);
-      printf("\n\tSystem CPU time used: %ld.%06ld", cusage.ru_stime.tv_sec, cusage.ru_stime.tv_usec);
-      printf("\n\tInvoluntary context switches: %ld", cusage.ru_nivcsw);
+      getrusage(RUSAGE_CHILDREN,&usage);
+      printf("\n\tChild CPU time used: %ld sec", usage.ru_utime.tv_usec);
+      printf("\n\tInvoluntary context switches: %ld", usage.ru_nivcsw);
     } else {
       if(execvp(args[0], args) < 0) {
         perror("\n ");
