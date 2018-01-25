@@ -14,6 +14,9 @@ int main() {
 
   system("clear");
   printf("\n\nThis is a shell :)");
+  long prvSec = 0;
+  long prvUsec = 0;
+  long prvSwitch = 0;
 
   while (1) {
 
@@ -22,9 +25,7 @@ int main() {
     char* token;
     int i = 0;
     struct rusage usage;
-    long prvSec = 0;
-    long prvUsec = 0;
-    long prvSwitch = 0;
+
     pid_t process;
 
     printf("\n\n~: ");
@@ -51,7 +52,6 @@ int main() {
       printf("\nLeaving shell.\n\n");
       exit(0);
     }
-
     process = fork();
     if (process < 0) {
       perror("\nfork error, fork didn't happen.\n");
@@ -61,6 +61,7 @@ int main() {
     } else if (process){
       wait(0);
       getrusage(RUSAGE_CHILDREN,&usage);
+
 
       printf("\n\tChild CPU time used: %ld.%06ld", (usage.ru_utime.tv_sec - prvSec), (usage.ru_utime.tv_usec - prvUsec));
       printf("\n\tInvoluntary context switches: %ld", (usage.ru_nivcsw - prvSwitch));
